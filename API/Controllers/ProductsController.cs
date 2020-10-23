@@ -51,7 +51,7 @@ namespace API.Controllers
         {
             var spec = new ProductsWIthTypesAndBrandsSpecification(id);
             var product = await _productsRepo.GetEntityWithSpec(spec);
-            if(product == null) return NotFound(new ApiResponse(400));
+            if(product == null) return NotFound(new ApiResponse(404));
             return _mapper.Map<Product, ProductToReturnDto>(product);
         }
 
