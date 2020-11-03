@@ -1,9 +1,9 @@
-import { createNgModule } from '@angular/compiler/src/core';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { IProduct } from 'src/app/shared/models/product';
-import { BreadcrumbService } from 'xng-breadcrumb';
 import { ShopService } from '../shop.service';
+import { ActivatedRoute } from '@angular/router';
+import { BreadcrumbService } from 'xng-breadcrumb';
+import { BasketService } from 'src/app/basket/basket.service';
 
 @Component({
   selector: 'app-product-details',
@@ -12,18 +12,41 @@ import { ShopService } from '../shop.service';
 })
 export class ProductDetailsComponent implements OnInit {
   product: IProduct;
+  quantity = 1;
 
-  constructor(private shopService: ShopService, private activateRoute: ActivatedRoute, private bcService: BreadcrumbService) {
-    this.bcService.set('@productDetails', ' ');
-   }
+  constructor(private shopService: ShopService,
+              private activateRoute: ActivatedRoute,
+              private bcService: BreadcrumbService,
+              private basketService: BasketService) {
+    this.bcService.set('@productDetails', '');
+  }
 
-  ngOnInit(): void {
+  // tslint:disable-next-line: typedef
+  ngOnInit() {
     this.loadProduct();
   }
+
+  // tslint:disable-next-line: typedef
+  addItemToBasket() {
+    this.basketService.addItemToBasket(this.product, this.quantity);
+  }
+
+  // tslint:disable-next-line: typedef
+  incrementQuantity() {
+    this.quantity++;
+  }
+
+  // tslint:disable-next-line: typedef
+  decrementQuantity() {
+    if (this.quantity > 1) {
+      this.quantity--;
+    }
+  }
+
   // tslint:disable-next-line: typedef
   loadProduct() {
     this.shopService.getProduct(+this.activateRoute.snapshot.paramMap.get('id')).subscribe(product => {
-      this.product =  product;
+      this.product = product;
       this.bcService.set('@productDetails', product.name);
     }, error => {
       console.log(error);
