@@ -12,7 +12,8 @@ import { IAddress } from '../shared/models/address';
 })
 export class AccountService {
   baseUrl = environment.apiUrl;
-  private currentUserSource = new ReplaySubject<IUser>(1);
+  // private currentUserSource = new ReplaySubject<IUser>(1);
+  private currentUserSource: ReplaySubject<IUser> = new ReplaySubject<IUser>(null);
   currentUser$ = this.currentUserSource.asObservable();
 
   constructor(private http: HttpClient, private router: Router) { }
