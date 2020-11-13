@@ -29,5 +29,4 @@ export class CheckoutReviewComponent implements OnInit {
       console.log(error);
     });
   }
-
 }
